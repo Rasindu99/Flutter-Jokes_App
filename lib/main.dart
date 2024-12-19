@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'joke_service.dart';
-import 'dart:convert';
 
 void main() => runApp(const MyApp());
 
@@ -32,7 +31,7 @@ class _JokeListPageState extends State<JokeListPage> {
   Future<void> _fetchJokes() async {
     setState(() => _isLoading = true);
     try {
-      _jokesRaw = await _jokeService.fetchJokesRaw();
+      _jokesRaw = await _jokeService.fetchJokes();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error fetching jokes: $e')),

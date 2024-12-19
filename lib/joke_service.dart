@@ -29,7 +29,7 @@ class JokeService {
   /// Fetch jokes directly from the API
   Future<List<Map<String, dynamic>>> fetchJokesRaw() async {
     final response = await _dio.get(
-      "https://v2.jokeapi.dev/joke/Programming,Christmas?blacklistFlags=nsfw,religious,racist&amount=4",
+      "https://v2.jokeapi.dev/joke/Programming,Christmas?blacklistFlags=nsfw,religious,racist&amount=7",
     );
 
     if (response.statusCode == 200) {

@@ -31,7 +31,7 @@ class _JokeListPageState extends State<JokeListPage> {
   Future<void> _fetchJokes() async {
     setState(() => _isLoading = true);
     try {
-      _jokesRaw = await _jokeService.fetchJokes();
+      _jokesRaw = await _jokeService.fetchJokesRaw();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error fetching jokes: $e')),
@@ -93,7 +93,10 @@ class _JokeListPageState extends State<JokeListPage> {
                 ),
                 child: Text(
                   _isLoading ? 'Loading...' : 'Fetch Jokes',
-                  style: const TextStyle(fontSize: 18),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -124,16 +127,58 @@ class _JokeListPageState extends State<JokeListPage> {
         final jokeJson = _jokesRaw[index];
         return Card(
           margin: const EdgeInsets.only(bottom: 16),
-          elevation: 4,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          elevation: 6, // Adds shadow effect
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: Colors.deepPurple.shade200, width: 1.5),
+          ),
+          color: Colors.deepPurple.shade50, // Card background color
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text(
-              jokeJson['type'] == 'twopart'
-                  ? '${jokeJson['setup']}\n\n${jokeJson['delivery']}'
-                  : jokeJson['joke'],
-              style: const TextStyle(fontSize: 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Title Section
+                Text(
+                  'Joke ${index + 1}', // Title for each joke
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepPurple,
+                  ),
+                ),
+                const Divider(
+                  color: Colors.deepPurple,
+                  thickness: 1.0,
+                  height: 20.0,
+                ),
+                // Joke Content
+                Text(
+                  jokeJson['type'] == 'twopart'
+                      ? '${jokeJson['setup']}\n\n${jokeJson['delivery']}'
+                      : jokeJson['joke'],
+                  style: const TextStyle(
+                    fontSize: 14,
+                    height: 1.5,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                // Footer Section
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Text(
+                    jokeJson['type'] == 'twopart'
+                        ? 'Category: Two-part'
+                        : 'Category: Single',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.deepPurple.shade700,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         );
